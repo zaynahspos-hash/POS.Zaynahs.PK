@@ -1,0 +1,39 @@
+name: Supabase Database Keep-Alive
+
+on:
+  schedule:
+    # Runs at 09:00 and 21:00 UTC every day to wake up the database
+    - cron: '0 9,21 * * *'
+  workflow_dispatch: # Allows manual trigger of keep-alive run from GitHub UI
+
+jobs:
+  ping-db:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Keep-Alive API Endpoint
+        run: |
+          echo "Sending keep-alive request to wake up and ping the Supabase database via Prisma..."
+          response=$(curl -s -w "\n%{http_code}" https://zaynahspos.com/api/health)
+          
+          echo "Response body & Status code:"
+          echo "$response"
+          
+          # Extract status code
+          status=$(echo "$response" | tail -n 1)
+          
+          if [ "$status" -eq 200 ]; then
+            echo "✅ Great success! Database is awake and active."
+          else
+            echo "⚠️ Non-200 response received (Status: $status). Database might be asleep or in a cold start. Retrying in 10 seconds..."
+            sleep 10
+            retry_res=$(curl -s -w "\n%{http_code}" https://zaynahspos.com/api/health)
+            echo "$retry_res"
+            retry_status=$(echo "$retry_res" | tail -n 1)
+            
+            if [ "$retry_status" -eq 200 ]; then
+              echo "✅ Success on retry!"
+            else
+              echo "❌ Database could not be reached or returned an error (Status: $retry_status)."
+              exit 1
+            fi
+          fi

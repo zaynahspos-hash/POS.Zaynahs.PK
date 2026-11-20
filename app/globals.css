@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-emerald: #10B981;
+  --color-brand-dark: #0A0A0A;
+  --color-brand-surface: #121212;
+  --color-brand-border: rgba(255, 255, 255, 0.05);
+
+  --font-outfit: var(--font-outfit), sans-serif;
+  --font-inter: var(--font-sans), sans-serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+    100% {
+      box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  position: relative;
+}
+

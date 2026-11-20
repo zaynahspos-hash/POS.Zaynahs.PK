@@ -1,0 +1,28 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Lead Capture Table
+model PosLead {
+  id            String   @id @default(uuid())
+  shopName      String   @map("shop_name")
+  ownerName     String   @map("owner_name")
+  phoneNumber   String   @map("phone_number")
+  email         String?
+  businessType  String   @map("business_type")
+  city          String?
+  status        String   @default("pending") // pending, contacted, installed, cancelled
+  notes         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("pos_leads")
+}
+

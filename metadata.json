@@ -1,0 +1,8 @@
+{
+  "name": "ZaynahsPOS",
+  "description": "ZaynahsPOS - Ultra-Modern Landing Page + Demo Redirect with Supabase \u0026 Prisma integration",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
